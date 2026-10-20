@@ -22,6 +22,7 @@ cpu=armv7-a
 
 cpuflags=
 
+# Encoders: png and mjpeg only, for mpv screenshots (US-33.1); zlib is the NDK's.
 # Filters the player uses through mpv's --vf/--af lavfi bridge. Everything else stays out to keep
 # the APK small. Plumbing first, then video (flip, rotate, deinterlace, picture), then audio.
 filters=(
@@ -47,6 +48,7 @@ filters=$(IFS=,; echo "${filters[*]}")
 	--disable-{stripping,doc,programs} \
 	--disable-{muxers,encoders,devices,filters} \
 	--enable-filter=$filters \
+	--enable-encoder=png,mjpeg --enable-zlib \
 	--disable-v4l2-m2m
 
 make -j$cores
