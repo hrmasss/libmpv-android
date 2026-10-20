@@ -21,6 +21,21 @@ cpu=armv7-a
 [[ "$ndk_triple" == "i686"* ]] && cpu="i686 --disable-asm"
 
 cpuflags=
+
+# Filters the player uses through mpv's --vf/--af lavfi bridge. Everything else stays out to keep
+# the APK small. Plumbing first, then video (flip, rotate, deinterlace, picture), then audio.
+filters=(
+	buffer buffersink abuffer abuffersink format aformat null anull scale aresample
+	split asplit setpts asetpts trim atrim fps setsar setdar
+	hflip vflip transpose rotate crop pad
+	bwdif yadif w3fdif
+	eq hue negate colorchannelmixer lutyuv unsharp gblur
+	pan afade volume alimiter acompressor compand
+	equalizer superequalizer bass treble highpass lowpass
+	dynaudnorm loudnorm atempo asetrate channelmap channelsplit amerge
+	extrastereo stereotools crossfeed earwax
+)
+filters=$(IFS=,; echo "${filters[*]}")
 [[ "$ndk_triple" == "arm"* ]] && cpuflags="$cpuflags -mfpu=neon -mcpu=cortex-a8"
 
 ../configure \
@@ -31,6 +46,7 @@ cpuflags=
 	--disable-static --enable-shared --enable-{gpl,version3} \
 	--disable-{stripping,doc,programs} \
 	--disable-{muxers,encoders,devices,filters} \
+	--enable-filter=$filters \
 	--disable-v4l2-m2m
 
 make -j$cores

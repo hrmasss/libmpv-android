@@ -20,6 +20,7 @@ v_mbedtls=3.6.7
 v_libplacebo=7.360.1
 v_dav1d=1.5.4
 v_ffmpeg=9.0.2
+v_uchardet=0.0.8
 v_mpv=0.41.0
 
 
@@ -37,5 +38,6 @@ dep_libunibreak=()
 dep_libass=(freetype fontconfig fribidi harfbuzz libunibreak)
 dep_lua=()
 dep_libplacebo=()
-dep_mpv=(ffmpeg libass lua libplacebo)
+dep_uchardet=()
+dep_mpv=(ffmpeg libass lua libplacebo uchardet)
 dep_mpv_android=(mpv)
