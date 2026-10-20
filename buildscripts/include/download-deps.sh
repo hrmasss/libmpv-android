@@ -49,6 +49,13 @@ fi
 
 [ ! -d libplacebo ] && git clone --depth 1 --branch v$v_libplacebo --recurse-submodules https://code.videolan.org/videolan/libplacebo.git libplacebo
 
+# libiconv
+if [ ! -d libiconv ]; then
+	mkdir libiconv
+	$WGET https://ftp.gnu.org/pub/gnu/libiconv/libiconv-$v_libiconv.tar.gz -O - | \
+		tar -xz -C libiconv --strip-components=1
+fi
+
 # uchardet
 [ ! -d uchardet ] && git clone --depth 1 --branch v$v_uchardet https://gitlab.freedesktop.org/uchardet/uchardet.git uchardet
 
