@@ -17,7 +17,8 @@ loadarch () {
 	unset CC CXX CPATH LIBRARY_PATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH
   unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
-	local apilvl=26
+	# API 29 = the app's minSdk; bionic has iconv from API 28, which mpv needs for sub-codepage.
+	export apilvl=29
 	# ndk_triple: what the toolchain actually is
 	# cc_triple: what Google pretends the toolchain is
 	if [ "$1" == "armv7l" ]; then
