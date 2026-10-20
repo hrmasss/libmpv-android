@@ -16,7 +16,15 @@ fi
 
 unset CC CXX # meson wants these unset
 
-meson setup $build --cross-file "$prefix_dir"/crossfile.txt \
+# Link GNU libiconv (built into the prefix) instead of bionic's: its iconv.h maps iconv_* to
+# libiconv_*, so meson's iconv check and mpv both resolve to the static libiconv.a.
+cat >"$prefix_dir/iconv.ini" <<ICONV
+[built-in options]
+c_args = ['-I$prefix_dir/include']
+c_link_args = ['-L$prefix_dir/lib', '-liconv']
+ICONV
+
+meson setup $build --cross-file "$prefix_dir"/crossfile.txt --cross-file "$prefix_dir"/iconv.ini \
 	--default-library shared \
 	-Diconv=enabled -Duchardet=enabled -Dlua=enabled \
 	-Dlibmpv=true -Dcplayer=false \
